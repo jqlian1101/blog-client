@@ -6,7 +6,7 @@ const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 
 const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i;
 
-function resolve(dir) {
+function resolve (dir) {
     return path.join(__dirname, dir)
 }
 
@@ -110,10 +110,10 @@ module.exports = {
         }
 
         config.externals = {
-            'vue': 'Vue',
-            'axios': 'axios',
+            vue: 'Vue',
+            axios: 'axios',
             'vue-router': 'VueRouter',
-            'vuex': 'Vuex'
+            vuex: 'Vuex'
             // 'element-ui': 'ELEMENT'
             // "echarts": "echarts"
         };

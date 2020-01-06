@@ -1,8 +1,25 @@
-import Vue from 'vue'
-import App from './App.vue'
+import '@babel/polyfill';
+import Es6Promise from 'es6-promise'
+import Vue from 'vue';
 
-Vue.config.productionTip = false
+import App from './App.vue';
+import router from './router.js'
+import store from './store'
 
+
+// 全局样式
+import 'styles/index.scss';
+
+Es6Promise.polyfill();
+
+Vue.config.productionTip = false;
+
+// window.onload = function () {
 new Vue({
-  render: h => h(App)
+    store,
+    router,
+    render: h => h(App)
 }).$mount('#app')
+// }
+
+
