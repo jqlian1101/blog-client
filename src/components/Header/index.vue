@@ -2,19 +2,19 @@
     <div :class="$style.root">
         <div :class="$style.headerInner">
             <div :class="$style.left">
-                <a href="/" :class="$style.logo">
+                <router-link to="/" :class="$style.logo">
                     <!-- <img src="../../assets/logo.png" alt /> -->
-                </a>
+                </router-link>
                 <ul :class="$style.tabs">
-                    <a href="/">
+                    <router-link to="/">
                         <li :class="$style.isActive">首页</li>
-                    </a>
-                    <a href="/">
+                    </router-link>
+                    <router-link to="/">
                         <li>发现</li>
-                    </a>
-                    <a href="/">
+                    </router-link>
+                    <router-link to="/">
                         <li>等你来答</li>
-                    </a>
+                    </router-link>
                 </ul>
             </div>
             <div :class="$style.right">
@@ -25,7 +25,7 @@
                         v-model="searchValue"
                     ></el-input>
                 </div>
-                <div :class="$style.userInfo">登录 | 注册</div>
+                <!-- <div :class="$style.userInfo">登录 | 注册</div> -->
             </div>
         </div>
     </div>

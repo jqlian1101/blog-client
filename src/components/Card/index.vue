@@ -29,12 +29,18 @@ export default {
     .card-title {
         font-size: 14px;
         color: #333;
-        border-bottom: 1px solid hsla(0, 0%, 58.8%, 0.1);
-        margin: 0 -20px;
-        padding: 0 20px 8px;
+        display: flex;
+        justify-content: space-between;
+        padding-left: 12px;
+        border-left: 4px solid #ec7259;
+        font-size: 16px;
+        font-weight: 500;
+        height: 20px;
+        line-height: 20px;
+        margin-bottom: 10px;
     }
 
-    .card-cont{
+    .card-cont {
         padding-top: 10px;
     }
 }

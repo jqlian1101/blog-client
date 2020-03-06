@@ -172,9 +172,9 @@
             <p>沈向洋主要专注于计算机视觉、图形学、人机交互、统计学习、模式识别和机器人等方向的研究工作，是计算机视觉和图形学研究的世界级专家。</p>
         </div>
         <template v-slot:aside>
-            <UserInfoCard />
+            <!-- <UserInfoCard /> -->
             <RecommendCard />
-            <CatalogCard />
+            <!-- <CatalogCard /> -->
         </template>
     </Layout>
 </template>
@@ -182,27 +182,27 @@
 <script>
 import Layout from "@components/Layout";
 
-import UserInfoCard from "@components/Aside/UserInfo";
+// import UserInfoCard from "@components/Aside/UserInfo";
 import RecommendCard from "@components/Aside/Recommend";
-import CatalogCard from "@components/Aside/Catalog";
+// import CatalogCard from "@components/Aside/Catalog";
 
 export default {
-    name: "app",
+    name: "Article",
     data() {
         return {};
     },
     components: {
         Layout,
-        UserInfoCard,
-        RecommendCard,
-        CatalogCard
+        // UserInfoCard,
+        RecommendCard
+        // CatalogCard
     },
     mounted() {}
 };
 </script>
 
 <style lang="scss" module>
-.content{
+.content {
     background: #fff;
     padding: 20px;
 }

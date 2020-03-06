@@ -52,7 +52,9 @@ export default {
         RecommendCard
         // CatalogCard
     },
-    mounted() {}
+    mounted() {
+        console.log(this.$route.params);
+    }
 };
 </script>
 

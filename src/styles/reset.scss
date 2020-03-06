@@ -40,6 +40,10 @@ a {
   color: inherit;
 }
 
+a:hover {
+  color: $highlight-color;
+}
+
 /* 重置列表元素 */
 ol,
 ul {
