@@ -7,23 +7,27 @@ body {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
     sans-serif;
   color: #333;
+  min-width: 1080px;
   overflow: auto;
 }
 
-html {
-  -moz-user-select: none; /*火狐*/
-  -webkit-user-select: none; /*webkit浏览器*/
-  -ms-user-select: none; /*IE10*/
-  -khtml-user-select: none; /*早期浏览器*/
-  user-select: none;
-}
+// html {
+//   -moz-user-select: none; /*火狐*/
+//   -webkit-user-select: none; /*webkit浏览器*/
+//   -ms-user-select: none; /*IE10*/
+//   -khtml-user-select: none; /*早期浏览器*/
+//   user-select: none;
+// }
 
-.no-select {
-  -moz-user-select: none; /*火狐*/
-  -webkit-user-select: none; /*webkit浏览器*/
-  -ms-user-select: none; /*IE10*/
-  -khtml-user-select: none; /*早期浏览器*/
-  user-select: none;
+// 禁止选中文本
+// 在 IE < 10 和Opera < 15中，需要在需要禁止选中的元素上面添加一个属性unselectable="on"，
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently not supported by any browser */
 }
 
 img {
@@ -136,15 +140,4 @@ body {
   .el-loading-text {
     font-size: 18px;
   }
-}
-
-// 禁止选中文本
-// 在 IE < 10 和Opera < 15中，需要在需要禁止选中的元素上面添加一个属性unselectable="on"，
-.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Chrome/Safari/Opera */
-  -khtml-user-select: none; /* Konqueror */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently not supported by any browser */
 }

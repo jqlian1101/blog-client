@@ -6,20 +6,18 @@ import App from './App.vue';
 import router from './router.js'
 import store from './store'
 
-
 // 全局样式
-import 'styles/index.scss';
+import '@styles/icon_font/iconfont.css';    // 引入字体图标
+import '@styles/index.scss';
 
 Es6Promise.polyfill();
 
 Vue.config.productionTip = false;
 
-// window.onload = function () {
 new Vue({
     store,
     router,
     render: h => h(App)
 }).$mount('#app')
-// }
 
 
