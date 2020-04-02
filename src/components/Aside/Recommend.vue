@@ -6,17 +6,17 @@
         -->
         <div class="card-title">推荐阅读</div>
         <div class="card-cont">
-            <div :class="$style.listItem">
+            <div
+                :class="$style.listItem"
+                class="cursor-p"
+                v-for="item in listData"
+                :key="item.id"
+                @click="$router.push({ path: `/article/${item.id}`})"
+            >
                 <div title="第十五天" :class="$style.title" class="line-clamp">
-                    <router-link to="/article" rel="noopener noreferrer">第十五天</router-link>
+                    <a rel="noopener noreferrer">{{item.title}}</a>
                 </div>
-                <div :class="$style.meta">2019年9月9日</div>
-            </div>
-            <div>
-                <div title="第十五天" :class="$style.title">
-                    <router-link to="/article" rel="noopener noreferrer">第十五天</router-link>
-                </div>
-                <div :class="$style.meta">2019年9月9日</div>
+                <div :class="$style.meta">{{item.createDate}}</div>
             </div>
         </div>
     </Card>
@@ -24,16 +24,29 @@
 
 <script>
 import Card from "@components/Card";
+import { articleService } from "@api";
 
 export default {
     name: "UserInfoCard",
     data() {
-        return {};
+        return {
+            listData: []
+        };
     },
     components: {
         Card
     },
-    mounted() {}
+    mounted() {
+        this.getList();
+    },
+    methods: {
+        async getList() {
+            const res = await articleService.getRecommendations();
+            const { result = [] } = res.data || {};
+
+            this.listData = result;
+        }
+    }
 };
 </script>
 

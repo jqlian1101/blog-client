@@ -5,12 +5,19 @@
 import request from "./utils/request";
 
 /**
- * 获取文章详情
- * @param {Object}  { id }
+ * 获取文章列表
  */
-export const getArticleDetail = params =>
-    request("/article/detail", { ...params });
+export const getList = params => request("/article/list", { ...params });
 
-export default {
-    getArticleDetail
-};
+/**
+ * 获取推荐文章列表
+ */
+export const getRecommendations = params =>
+    request("/article/recommendations", { ...params });
+
+/**
+ * 获取文章详情
+ * @param {id}
+ */
+export const getDetailById = params =>
+    request("/article/detail", { ...params });

@@ -1,8 +1,14 @@
 <template>
     <Layout>
         <div :class="$style.content">
+            <h2 :class="$style.articleTitle">{{articleDetail.title}}</h2>
+            <div :class="$style.articleInfo">
+                <div>创建时间：{{articleDetail.createDate}}</div>
+                <div>阅读量：{{articleDetail.readNumber}}</div>
+                <div>赞：{{articleDetail.like}}</div>
+            </div>
             <mavon-editor
-                v-model="articleContnet"
+                v-model="articleDetail.content"
                 :editable="false"
                 defaultOpen="preview"
                 :subfield="false"
@@ -28,14 +34,14 @@ import Layout from "@components/Layout";
 import RecommendCard from "@components/Aside/Recommend";
 // import CatalogCard from "@components/Aside/Catalog";
 
-import articleService from "@api/article.js";
+import { articleService } from "@api";
 import Comment from "./comment";
 
 export default {
     name: "Article",
     data() {
         return {
-            articleContnet: "# test"
+            articleDetail: {}
         };
     },
     components: {
@@ -45,14 +51,22 @@ export default {
         // CatalogCard,
         Comment
     },
+    watch: {
+        "$route.params.id"(newId) {
+            this.initData(newId);
+        }
+    },
     mounted() {
         this.initData();
     },
     methods: {
-        async initData() {
-            const res = await articleService.getArticleDetail({ id: 2 });
+        async initData(id) {
+            id = id || this.$route.params.id || "";
+            if (!id) return;
+
+            const res = await articleService.getDetailById({ id });
             if (res.code !== 0) return;
-            this.articleContnet = res.data.detail.content;
+            this.articleDetail = res.data.detail;
         }
     }
 };
@@ -61,7 +75,22 @@ export default {
 <style lang="scss" module>
 .content {
     background: #fff;
-    // padding: 20px;
+    .articleTitle {
+        padding: 20px 20px 10px;
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    .articleInfo {
+        display: flex;
+        padding: 0px 20px 10px;
+        & > div {
+            color: #969696;
+        }
+        & > div:not(:last-child) {
+            margin-right: 18px;
+        }
+    }
 }
 .comment {
     padding: 20px;

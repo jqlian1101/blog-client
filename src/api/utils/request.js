@@ -1,12 +1,10 @@
 import axios from "axios";
-// import { message } from "antd";
 
 import { getUrl } from "./config";
 
 const axiosInstance = axios.create({
     timeout: 0,
     headers: {
-        // "Content-Type": "application/x-www-form-urlencoded"
     }
 });
 
@@ -31,12 +29,10 @@ axiosInstance.interceptors.response.use(
                 message: response.statusText || "数据请求失败",
                 type: "error"
             });
-            // message.error(response.statusText || "数据请求失败");
         }
         if (data.code !== 0) {
-            // message.error(response.statusText || data.message || "系统异常");
             ELEMENT.Message({
-                message: response.statusText || data.message || "系统异常",
+                message: data.message || "系统异常",
                 type: "error"
             });
             return Promise.reject(data);

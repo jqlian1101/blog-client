@@ -6,8 +6,8 @@
         <div class="card-title">热门标签</div>
         <div class="card-cont">
             <ul class="clearfix">
-                <li class="fll">
-                    <router-link to="/tags/aa" :class="$style.tag">aa</router-link>
+                <li class="fll" v-for="item in listData" :key="item.id">
+                    <router-link :to="`/tags/${item.id}`" :class="$style.tag">{{item.name}}</router-link>
                 </li>
             </ul>
         </div>
@@ -17,15 +17,29 @@
 <script>
 import Card from "@components/Card";
 
+import { tagService } from "@api";
+
 export default {
     name: "Tags",
     data() {
-        return {};
+        return {
+            listData: []
+        };
     },
     components: {
         Card
     },
-    mounted() {}
+    mounted() {
+        this.getList();
+    },
+    methods: {
+        async getList() {
+            const res = await tagService.getList();
+            console.log(res);
+            const { result } = res.data || {};
+            this.listData = result || [];
+        }
+    }
 };
 </script>
 
