@@ -21,3 +21,18 @@ export const getRecommendations = params =>
  */
 export const getDetailById = params =>
     request("/article/detail", { ...params });
+
+/**
+ * 评论
+ * @param { topicId, content }
+ */
+export const comment = params => request("/article/comment", { ...params });
+
+/**
+ * 获取文章评论列表
+ * @param { id: articleId }
+ */
+export const getCommentsByArticleId = params => {
+    const { id } = params || {};
+    return request(`/article/${id}/comments`);
+};

@@ -31,15 +31,23 @@
     .title:link {
         color: #333;
     }
-
-    // .title:visited {
-    //     color: #969696;
-    // }
 }
 
 .actionList {
     color: #b4b4b4;
+    display: flex;
+    align-content: center;
     .actionBtn {
         margin-right: 10px;
+        display: flex;
+        align-items: center;
+
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
+
+        i {
+            margin-right: 4px;
+        }
     }
 }

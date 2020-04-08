@@ -5,11 +5,11 @@
             <div :class="$style.operationWrap">
                 <div :class="$style.emoji">
                     <!-- <i class="iconfont icon-smile cursor-p" @click="toggleEmojiVisible(true)" />
-                    <VEmojiPicker @selectEmoji="selectEmoji" v-if="emojiVisible" /> -->
+                    <VEmojiPicker @selectEmoji="selectEmoji" v-if="emojiVisible" />-->
                 </div>
                 <div :class="$style.right">
-                    <button :class="$style.sure" class="noselect cursor-p">发布</button>
-                    <button :class="$style.cancel" class="noselect cursor-p">取消</button>
+                    <button :class="$style.sure" class="noselect cursor-p" @click="submitComment">发布</button>
+                    <!-- <button :class="$style.cancel" class="noselect cursor-p">取消</button> -->
                 </div>
             </div>
         </div>
@@ -18,6 +18,7 @@
 
 <script>
 // import VEmojiPicker from "./VEmojiPicker";
+import { articleService } from "@api";
 
 export default {
     name: "Comment",
@@ -30,17 +31,30 @@ export default {
     components: {
         // VEmojiPicker
     },
-    mounted() {},
+    mounted() {
+    },
     methods: {
-        selectEmoji(emoji) {
-            console.log(emoji);
-            const { data } = emoji;
-            this.textAreaValue += data;
-        },
-        toggleEmojiVisible(bool) {
-            console.log(bool);
-            this.emojiVisible = bool;
+        async submitComment() {
+            const { articleInfo } = this.$attrs;
+            const value = this.textAreaValue;
+            if (!value) return;
+            if (value.length > 200) return this.$message("最多可输入200个字符");
+
+            await articleService.comment({
+                topicId: articleInfo.id,
+                content: value
+            });
+            this.$message.success("发表成功");
         }
+        // selectEmoji(emoji) {
+        //     console.log(emoji);
+        //     const { data } = emoji;
+        //     this.textAreaValue += data;
+        // },
+        // toggleEmojiVisible(bool) {
+        //     console.log(bool);
+        //     this.emojiVisible = bool;
+        // }
     }
 };
 </script>
