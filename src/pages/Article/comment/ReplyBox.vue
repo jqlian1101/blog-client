@@ -1,8 +1,12 @@
 <template>
     <div :class="$style.boxRoot">
-        <slot :clickReply="togglePanelVisible" :arrowCls="$style.arrowCls" :showBox="showBox"></slot>
-        <div :class="[$style.panel, showBox ? $style.show : '']">
-            <div :class="$style.emptyComment">
+        <div :class="[$style.panel, visible ? $style.show : '']">
+            <ul v-if="isHaveReply">
+                <li :class="$style.list" v-for="item in replies" :key="item.id">
+                    <CommentList :dataSource="item" />
+                </li>
+            </ul>
+            <div :class="$style.emptyComment" v-else>
                 <div>
                     <i class="iconfont icon-suggest" :class="$style.emptyIcon"></i>
                 </div>
@@ -17,7 +21,7 @@
                         v-model="replyContent"
                     />
                 </div>
-                <button>评论</button>
+                <button @click="sendReply">评论</button>
             </div>
         </div>
     </div>
@@ -26,32 +30,73 @@
 <script>
 import { articleService } from "@api";
 
+import CommentList from "./List";
+
 export default {
     name: "ReplyBox",
     data() {
         return {
-            showBox: false,
-            replyContent: ""
+            replyContent: "",
+            replies: []
         };
     },
-    components: {},
-    mounted() {},
+    components: {
+        CommentList
+    },
+    props: {
+        commentData: {
+            type: Object,
+            default: () => ({})
+        },
+        visible: {
+            type: Boolean,
+            default: false
+        }
+    },
+    watch: {
+        "commentData.replies"(data) {
+            this.replies = data || [];
+        }
+    },
+    computed: {
+        isHaveReply() {
+            return this.replies.length > 0;
+        }
+    },
+    mounted() {
+        this.replies = this.commentData.replies || [];
+    },
     methods: {
-        togglePanelVisible() {
-            this.showBox = !this.showBox;
+        /**
+         * 获取回复列表
+         */
+        async getReplyList() {
+            const { id } = this.commentData;
+            if (!id) return;
+
+            const res = await articleService.getReplyList({ id });
+            this.replies = res.data.result || [];
         },
 
-        async submitComment() {
-            const { articleInfo } = this.$attrs;
-            const value = this.textAreaValue;
-            if (!value) return;
-            if (value.length > 200) return this.$message("最多可输入200个字符");
+        /**
+         * 回复评论
+         */
+        async sendReply() {
+            const { id } = this.commentData;
+            if (!id) return;
 
-            await articleService.comment({
-                topicId: articleInfo.id,
-                content: value
+            const { replyContent } = this;
+
+            await articleService.sendReply({
+                commentId: id,
+                content: replyContent
             });
-            this.$message.success("发表成功");
+
+            this.replyContent = "";
+            this.$message({ message: "发表成功", type: "success" });
+
+            // 刷新评论列表
+            this.getReplyList();
         }
     }
 };
@@ -62,6 +107,10 @@ $pad-16: 16px;
 
 .boxRoot {
     position: relative;
+
+    .list {
+        padding: 16px;
+    }
 }
 
 .panel {
@@ -85,38 +134,6 @@ $pad-16: 16px;
         .emptyIcon {
             font-size: 48px;
             color: #eaeaea;
-        }
-    }
-}
-
-.arrowCls {
-    position: relative;
-    :global {
-        .boxArrow {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-
-            &::before {
-                content: "";
-                position: absolute;
-                left: 0;
-                border-color: transparent transparent #eaeaea;
-                border-style: solid;
-                border-width: 0 8px 10px;
-                top: 100%;
-            }
-
-            &::after {
-                content: "";
-                position: absolute;
-                top: calc(100% + 2px);
-                left: 0;
-                border-color: transparent transparent #fff;
-                border-style: solid;
-                border-width: 0 8px 8px;
-            }
         }
     }
 }

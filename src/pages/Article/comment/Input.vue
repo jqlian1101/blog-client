@@ -45,6 +45,7 @@ export default {
                 content: value
             });
             this.$message.success("发表成功");
+            this.$emit('refreshComment')
         }
         // selectEmoji(emoji) {
         //     console.log(emoji);

@@ -7,13 +7,13 @@ import request from "./utils/request";
 /**
  * 获取文章列表
  */
-export const getList = params => request("/article/list", { ...params });
+export const getList = params => request("/article/list", { ...params, isSign: '0' });
 
 /**
  * 获取推荐文章列表
  */
 export const getRecommendations = params =>
-    request("/article/recommendations", { ...params });
+    request("/article/recommendations", { ...params, isSign: '0' });
 
 /**
  * 获取文章详情
@@ -36,3 +36,21 @@ export const getCommentsByArticleId = params => {
     const { id } = params || {};
     return request(`/article/${id}/comments`);
 };
+
+
+/**
+ * 获取文章评论的回复
+ * @param { id: commentId }
+ */
+export const getReplyList = params => {
+    const { id } = params || {};
+    return request(`/article/${id}/replies`);
+}
+
+/**
+ * 回复评论
+ */
+export const sendReply = params => {
+    const { commentId } = params || {};
+    return request(`/article/${commentId}/reply`, { ...params });
+}

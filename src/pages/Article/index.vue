@@ -17,40 +17,13 @@
             />
         </div>
         <div :class="$style.comment" v-if="isHaveArticle">
-            <Comment :articleInfo="articleDetail" />
+            <Comment :articleInfo="articleDetail" @refreshComment="refreshComment" />
         </div>
         <div :class="$style.commentListWrap">
             <div :class="$style.main">
                 <ul v-if="isHaveComment">
                     <li :class="$style.list" v-for="item in commentList" :key="item.id">
-                        <div :class="$style.box">
-                            <div :class="$style.userPopoverBox">
-                                <!-- <i class="iconfont icon-usercenter cursor-p" /> -->
-                            </div>
-                            <div :class="$style.listContent">
-                                <div :class="$style.userInfo">
-                                    <div :class="$style.userName">游客</div>
-                                </div>
-                                <div :class="$style.content">{{item.content}}</div>
-                                <ReplyBox v-slot:default="slotProps">
-                                    <div :class="$style.actionList">
-                                        <span :class="$style.actionBtn">
-                                            <i class="iconfont icon-good cursor-p" />
-                                            {{item.likeNum}}
-                                        </span>
-                                        <div
-                                            :class="[$style.actionBtn, slotProps.arrowCls]"
-                                            @click="slotProps.clickReply"
-                                        >
-                                            <i class="iconfont icon-pinglun cursor-p" />
-                                            0
-                                            <div class="boxArrow" v-if="slotProps.showBox" />
-                                        </div>
-                                        <span :class="$style.actionBtn">{{item.createDate}}</span>
-                                    </div>
-                                </ReplyBox>
-                            </div>
-                        </div>
+                        <CommentItem :dataSource="item" />
                     </li>
                 </ul>
                 <div v-else :class="$style.noComment">暂无评论</div>
@@ -72,8 +45,9 @@ import RecommendCard from "@components/Aside/Recommend";
 // import CatalogCard from "@components/Aside/Catalog";
 
 import { articleService } from "@api";
-import Comment from "./comment";
-import ReplyBox from "./replyBox";
+import Comment from "./comment/Input";
+// import ReplyBox from "./replyBox";
+import CommentItem from "./comment";
 
 export default {
     name: "Article",
@@ -89,7 +63,8 @@ export default {
         RecommendCard,
         // CatalogCard,
         Comment,
-        ReplyBox
+        // ReplyBox,
+        CommentItem
     },
     computed: {
         isHaveArticle() {
@@ -132,6 +107,13 @@ export default {
             const res = await articleService.getCommentsByArticleId({ id });
             const { result } = res.data;
             this.commentList = result || [];
+        },
+
+        /**
+         * 刷新评论列表
+         */
+        refreshComment() {
+            this.getCommentList();
         }
     }
 };
@@ -179,68 +161,6 @@ export default {
 
     .list {
         padding: 20px 0;
-    }
-
-    .box {
-        position: relative;
-        overflow: hidden;
-
-        .userPopoverBox {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            line-height: 38px;
-            text-align: center;
-            background: url("~@/assets/user.png");
-            background-size: contain;
-        }
-
-        .listContent {
-            margin-left: 46px;
-            margin-top: 6px;
-            min-height: 40px;
-        }
-
-        .userInfo {
-            display: flex;
-            .userName {
-                font-size: 14px;
-                font-weight: 600;
-                color: #333;
-            }
-        }
-
-        .content {
-            font-size: 14px;
-            line-height: 1.7;
-            color: #333;
-            margin: 6px 0 8px;
-        }
-
-        .actionList {
-            color: #b4b4b4;
-            display: flex;
-            align-content: center;
-            .actionBtn {
-                margin-right: 10px;
-                display: flex;
-                align-items: center;
-
-                &:not(:last-child) {
-                    margin-right: 10px;
-                }
-
-                i {
-                    margin-right: 4px;
-                }
-            }
-
-            .replyBoxArrow {
-            }
-        }
     }
 }
 </style>
