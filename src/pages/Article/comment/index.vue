@@ -1,9 +1,14 @@
 <template>
-    <CommentList :dataSource="dataSource" @toggleRelpybox="showReplyBox = !showReplyBox">
+    <CommentList
+        :dataSource="dataSource"
+        @toggleRelpybox="showReplyBox = !showReplyBox"
+        :replyNum="replyNum"
+        type="2"
+    >
         <template v-slot:boxArrow>
             <div class="boxArrow" v-if="showReplyBox" />
         </template>
-        <ReplyBox :commentData="dataSource" :visible="showReplyBox" />
+        <ReplyBox :commentData="dataSource" :visible="showReplyBox" @replySuccess="replySuccess" />
     </CommentList>
 </template>
 
@@ -17,7 +22,8 @@ export default {
         return {
             articleDetail: {},
             commentList: [],
-            showReplyBox: false
+            showReplyBox: false,
+            replyNum: 0
         };
     },
     components: {
@@ -30,10 +36,31 @@ export default {
             default: () => ({})
         }
     },
+    watch: {
+        "dataSource.replies"(replies = []) {
+            this.resetReplyNum(replies.length);
+        }
+    },
     mounted() {
-        this.showReplyBox = this.dataSource.replies
-            ? this.dataSource.replies.length > 0
-            : false;
+        this.init();
+    },
+    methods: {
+        /**
+         * 初始化页面数据
+         */
+        init() {
+            const { replies = [] } = this.dataSource;
+            this.showReplyBox = replies.length > 0;
+            this.resetReplyNum(replies.length);
+        },
+
+        resetReplyNum(num = 0) {
+            this.replyNum = num;
+        },
+
+        replySuccess() {
+            this.replyNum += 1;
+        }
     }
 };
 </script>

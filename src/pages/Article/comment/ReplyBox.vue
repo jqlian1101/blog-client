@@ -3,7 +3,7 @@
         <div :class="[$style.panel, visible ? $style.show : '']">
             <ul v-if="isHaveReply">
                 <li :class="$style.list" v-for="item in replies" :key="item.id">
-                    <CommentList :dataSource="item" />
+                    <CommentList :dataSource="item" type="3" />
                 </li>
             </ul>
             <div :class="$style.emptyComment" v-else>
@@ -97,6 +97,7 @@ export default {
 
             // 刷新评论列表
             this.getReplyList();
+            this.$emit("replySuccess");
         }
     }
 };

@@ -4,7 +4,7 @@
             <h2 :class="$style.articleTitle">{{articleDetail.title}}</h2>
             <div :class="$style.articleInfo">
                 <div>创建时间：{{articleDetail.createDate}}</div>
-                <div>阅读量：{{articleDetail.readNumber}}</div>
+                <div>阅读量：{{articleDetail.readNumber + 1}}</div>
                 <div>赞：{{articleDetail.like}}</div>
             </div>
             <mavon-editor
@@ -34,6 +34,13 @@
             <RecommendCard />
             <!-- <CatalogCard /> -->
         </template>
+        <div :class="$style.like" class="cursor-p" @click="refreshLikeNum">
+            <i class="iconfont icon-good cursor-p" v-if="!isLike" />
+            <i class="iconfont icon-good-fill cursor-p" v-else />
+        </div>
+        <div :class="$style.unLike" class="cursor-p" @click="unLike">
+            <i class="iconfont icon-bad cursor-p" />
+        </div>
     </Layout>
 </template>
 
@@ -54,7 +61,8 @@ export default {
     data() {
         return {
             articleDetail: {},
-            commentList: []
+            commentList: [],
+            isLike: false
         };
     },
     components: {
@@ -72,6 +80,9 @@ export default {
         },
         isHaveComment() {
             return this.commentList.length > 0;
+        },
+        articleId() {
+            return this.$route.params.id || "";
         }
     },
     watch: {
@@ -89,8 +100,10 @@ export default {
          * 获取详情
          */
         async initData(id) {
-            id = id || this.$route.params.id || "";
+            id = id || this.articleId;
             if (!id) return;
+
+            this.refreshReadNum(id);
 
             const res = await articleService.getDetailById({ id });
             if (res.code !== 0) return;
@@ -114,6 +127,37 @@ export default {
          */
         refreshComment() {
             this.getCommentList();
+        },
+
+        /**
+         * 更新阅读量
+         */
+        refreshReadNum(id) {
+            if (id === this.prev_refreshReadNum_id) return;
+            this.prev_refreshReadNum_id = id;
+            articleService.refreshReadNum(id);
+        },
+
+        /**
+         * 更新赞的数量
+         */
+        async refreshLikeNum() {
+            if (!this.articleId) return;
+            await articleService.refreshLikeNum({
+                id: this.articleId,
+                type: 1
+            });
+            this.articleDetail.like += 1;
+            this.isLike = true;
+        },
+
+        unLike() {
+            const commentDom = document.querySelector("#comment");
+            if (!commentDom) return;
+
+            commentDom.scrollIntoView(false);
+            const inp = commentDom.querySelector(".commentInput");
+            inp && inp.focus();
         }
     }
 };
@@ -162,6 +206,28 @@ export default {
     .list {
         padding: 20px 0;
     }
+}
+
+.like,
+.unLike {
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    margin-left: -590px;
+    border-radius: 50%;
+    background-color: #fff;
+    i {
+        font-size: 24px;
+        color: #969696;
+    }
+}
+
+.unLike {
+    top: calc(40% + 50px);
 }
 </style>
 

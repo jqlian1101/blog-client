@@ -54,3 +54,19 @@ export const sendReply = params => {
     const { commentId } = params || {};
     return request(`/article/${commentId}/reply`, { ...params });
 }
+
+/**
+ * 更新阅读量
+ */
+export const refreshReadNum = id => request(`/article/${id}/readNum`, {}, { showLoading: false });
+
+
+/**
+ * 更新赞的数量 文章
+ * @param { id, type }  type: 1 文章，2 评论，3 回复
+ */
+export const refreshLikeNum = params => {
+    const { id } = params;
+    return request(`/article/${id}/like`, { ...params }, { showLoading: false });
+}
+

@@ -5,16 +5,16 @@
                 <div @click="onClickList(item)" class="cursor-p">
                     <a :class="$style.title">{{item.title}}</a>
                     <div :class="$style.abstract" class="line-clamp">{{item.summary}}</div>
-                    <div :class="$style.actionList">
-                        <span :class="$style.actionBtn">
-                            <i class="iconfont icon-pinglun cursor-p" />
-                            {{item.readNumber}}
-                        </span>
-                        <span :class="$style.actionBtn">
-                            <i class="iconfont icon-good cursor-p" />
-                            {{item.like}}
-                        </span>
-                    </div>
+                </div>
+                <div :class="$style.actionList">
+                    <span :class="$style.actionBtn">
+                        <i>阅读量</i>
+                        {{item.readNumber}}
+                    </span>
+                    <span :class="$style.actionBtn" @click="refreshLike(item.id,item)">
+                        <i class="iconfont icon-good cursor-p" />
+                        {{item.like}}
+                    </span>
                 </div>
             </Card>
         </ul>
@@ -75,6 +75,15 @@ export default {
          */
         onClickList(item) {
             this.$router.push({ path: `/article/${item.id}` });
+        },
+
+        /**
+         * 赞
+         */
+        async refreshLike(id, item) {
+            if (!id) return;
+            await articleService.refreshLikeNum({ id, type: 1 });
+            item.like += 1;
         }
     }
 };

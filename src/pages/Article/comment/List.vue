@@ -8,7 +8,7 @@
             <div :class="$style.content">{{dataSource.content}}</div>
             <div :class="$style.actionList">
                 <span :class="$style.actionBtn">
-                    <i class="iconfont icon-good cursor-p" />
+                    <i class="iconfont icon-good cursor-p" @click="refreshLike" />
                     {{dataSource.likeNum}}
                 </span>
                 <div
@@ -17,7 +17,7 @@
                     @click="$emit('toggleRelpybox')"
                 >
                     <i class="iconfont icon-pinglun cursor-p" />
-                    {{dataSource.replies.length}}
+                    {{$attrs.replyNum || 0}}
                     <slot name="boxArrow"></slot>
                 </div>
                 <span :class="$style.actionBtn">{{dataSource.createDate}}</span>
@@ -29,6 +29,8 @@
 
 <script>
 // import ReplyBox from "./replyBox";
+
+import { articleService } from "@api";
 
 export default {
     name: "CommentList",
@@ -46,6 +48,16 @@ export default {
         allowReply: {
             type: Boolean,
             default: false
+        },
+        type: {
+            type: String,
+            required: true
+        }
+    },
+    methods: {
+        async refreshLike() {
+            const { id } = this.dataSource;
+            await articleService.articleService({ id, type: this.type });
         }
     }
 };

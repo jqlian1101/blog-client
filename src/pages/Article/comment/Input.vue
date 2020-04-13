@@ -1,7 +1,7 @@
 <template>
     <div :class="$style.comment">
-        <div :class="$style.textAreaWrap">
-            <textarea placeholder="写下你的评论..." v-model="textAreaValue"></textarea>
+        <div :class="$style.textAreaWrap" id="comment">
+            <textarea class="commentInput" placeholder="写下你的评论..." v-model="textAreaValue"></textarea>
             <div :class="$style.operationWrap">
                 <div :class="$style.emoji">
                     <!-- <i class="iconfont icon-smile cursor-p" @click="toggleEmojiVisible(true)" />
@@ -31,8 +31,7 @@ export default {
     components: {
         // VEmojiPicker
     },
-    mounted() {
-    },
+    mounted() {},
     methods: {
         async submitComment() {
             const { articleInfo } = this.$attrs;
@@ -45,7 +44,7 @@ export default {
                 content: value
             });
             this.$message.success("发表成功");
-            this.$emit('refreshComment')
+            this.$emit("refreshComment");
         }
         // selectEmoji(emoji) {
         //     console.log(emoji);
