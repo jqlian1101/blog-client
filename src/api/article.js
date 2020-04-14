@@ -66,7 +66,10 @@ export const refreshReadNum = id => request(`/article/${id}/readNum`, {}, { show
  * @param { id, type }  type: 1 文章，2 评论，3 回复
  */
 export const refreshLikeNum = params => {
-    const { id } = params;
-    return request(`/article/${id}/like`, { ...params }, { showLoading: false });
+    const { id, type } = params;
+    let prefix = 'article';
+    if (type === "2") prefix = 'comment';
+    if (type === "3") prefix = 'reply'
+    return request(`/${prefix}/${id}/like`, { showLoading: false });
 }
 

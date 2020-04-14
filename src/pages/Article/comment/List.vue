@@ -9,7 +9,7 @@
             <div :class="$style.actionList">
                 <span :class="$style.actionBtn">
                     <i class="iconfont icon-good cursor-p" @click="refreshLike" />
-                    {{dataSource.likeNum}}
+                    {{likeNum}}
                 </span>
                 <div
                     :class="[$style.actionBtn, $style.arrowCls]"
@@ -35,7 +35,10 @@ import { articleService } from "@api";
 export default {
     name: "CommentList",
     data() {
-        return {};
+        const { likeNum } = this.dataSource;
+        return {
+            likeNum
+        };
     },
     components: {
         // ReplyBox
@@ -57,7 +60,8 @@ export default {
     methods: {
         async refreshLike() {
             const { id } = this.dataSource;
-            await articleService.articleService({ id, type: this.type });
+            await articleService.refreshLikeNum({ id, type: this.type });
+            this.likeNum += 1;
         }
     }
 };
