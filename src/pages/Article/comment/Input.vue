@@ -40,6 +40,7 @@ export default {
             if (value.length > 200) return this.$message("最多可输入200个字符");
 
             await articleService.comment({
+                topicTitle: articleInfo.title,
                 topicId: articleInfo.id,
                 content: value
             });
