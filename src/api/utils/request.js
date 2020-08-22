@@ -45,7 +45,7 @@ axiosInstance.interceptors.response.use(
     }
 );
 
-export function request(
+export function request (
     url,
     data = {},
     {
@@ -56,7 +56,8 @@ export function request(
     } = {}
 ) {
     // 通用参数
-    const common = {};
+    const common = {
+    };
 
     // 生成请求数据
     const requestData = { ...common, ...data };

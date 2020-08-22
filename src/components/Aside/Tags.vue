@@ -35,7 +35,6 @@ export default {
     methods: {
         async getList() {
             const res = await tagService.getList();
-            console.log(res);
             const { result } = res.data || {};
             this.listData = result || [];
         }

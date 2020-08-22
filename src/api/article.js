@@ -7,13 +7,13 @@ import request from "./utils/request";
 /**
  * 获取文章列表
  */
-export const getList = params => request("/article/list", { ...params });
+export const getList = params => request("/article/list", { ...params, isSign: '0' });
 
 /**
  * 获取推荐文章列表
  */
 export const getRecommendations = params =>
-    request("/article/recommendations", { ...params });
+    request("/article/recommendations", { ...params, isSign: '0' });
 
 /**
  * 获取文章详情
@@ -36,3 +36,40 @@ export const getCommentsByArticleId = params => {
     const { id } = params || {};
     return request(`/article/${id}/comments`);
 };
+
+
+/**
+ * 获取文章评论的回复
+ * @param { id: commentId }
+ */
+export const getReplyList = params => {
+    const { id } = params || {};
+    return request(`/article/${id}/replies`);
+}
+
+/**
+ * 回复评论
+ */
+export const sendReply = params => {
+    const { commentId } = params || {};
+    return request(`/article/${commentId}/reply`, { ...params });
+}
+
+/**
+ * 更新阅读量
+ */
+export const refreshReadNum = id => request(`/article/${id}/readNum`, {}, { showLoading: false });
+
+
+/**
+ * 更新赞的数量 文章
+ * @param { id, type }  type: 1 文章，2 评论，3 回复
+ */
+export const refreshLikeNum = params => {
+    const { id, type } = params;
+    let prefix = 'article';
+    if (type === "2") prefix = 'comment';
+    if (type === "3") prefix = 'reply'
+    return request(`/${prefix}/${id}/like`, { showLoading: false });
+}
+

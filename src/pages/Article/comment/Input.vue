@@ -1,7 +1,7 @@
 <template>
     <div :class="$style.comment">
-        <div :class="$style.textAreaWrap">
-            <textarea placeholder="写下你的评论..." v-model="textAreaValue"></textarea>
+        <div :class="$style.textAreaWrap" id="comment">
+            <textarea class="commentInput" placeholder="写下你的评论..." v-model="textAreaValue"></textarea>
             <div :class="$style.operationWrap">
                 <div :class="$style.emoji">
                     <!-- <i class="iconfont icon-smile cursor-p" @click="toggleEmojiVisible(true)" />
@@ -31,8 +31,7 @@ export default {
     components: {
         // VEmojiPicker
     },
-    mounted() {
-    },
+    mounted() {},
     methods: {
         async submitComment() {
             const { articleInfo } = this.$attrs;
@@ -41,10 +40,12 @@ export default {
             if (value.length > 200) return this.$message("最多可输入200个字符");
 
             await articleService.comment({
+                topicTitle: articleInfo.title,
                 topicId: articleInfo.id,
                 content: value
             });
             this.$message.success("发表成功");
+            this.$emit("refreshComment");
         }
         // selectEmoji(emoji) {
         //     console.log(emoji);
